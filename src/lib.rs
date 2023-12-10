@@ -1,4 +1,4 @@
-struct Screen {
+pub struct Screen {
     width: usize,
     height: usize,
     standartchar: char,
@@ -6,11 +6,11 @@ struct Screen {
 }
 
 impl Screen {
-    fn new(width: usize, height: usize, standartchar: char) -> Screen {
+    pub fn new(width: usize, height: usize, standartchar: char) -> Screen {
         let frame = vec![vec![standartchar; width]; height];
         Screen {width, height, standartchar, frame}
     }
-    fn print(&self) {
+    pub fn print(&self) {
         for line in &self.frame {
             for character in line {
                 print!("{}", character);
@@ -18,11 +18,11 @@ impl Screen {
             println!()
         }
     }
-    fn cls(&mut self) {
+    pub fn cls(&mut self) {
         self.frame = vec![vec![self.standartchar; self.width]; self.height];
         
     }
-    fn addstring(&mut self, x: usize, y: usize, text: &str) {
+    pub fn addstring(&mut self, x: usize, y: usize, text: &str) {
         if !(x + text.len() > self.width) && y <= self.height{
             let textlist = text.chars();
             if let Some(row) = self.frame.get_mut(y) {
