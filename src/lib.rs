@@ -1,3 +1,5 @@
+use std::io;
+
 pub struct Screen {
     width: usize,
     height: usize,
@@ -17,6 +19,19 @@ impl Screen {
             }
             println!()
         }
+    }
+    pub fn addinput(&mut self, x: usize, y: usize) -> String {
+        self.addstring(x, y, ">    ");
+        println!("{}{}", x, y );
+        self.print();
+        let mut inputofusr = String::new();
+        io::stdin()
+            .read_line(&mut inputofusr)
+            .expect("Error by reading input");
+        println!("{}{}", x + 1, y );
+        self.addstring(x + 1, y, &inputofusr.trim().to_string());
+        self.print();
+        inputofusr.trim().to_string()
     }
     pub fn cls(&mut self) {
         self.frame = vec![vec![self.standartchar; self.width]; self.height];
@@ -42,11 +57,10 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let mut app = Screen::new(20, 20, '/');
-        app.print();
-        app.addstring(10, 10, "test");
-        app.print();
-        app.cls();
+        let mut app = Screen::new(10, 10, '#');
+        app.addstring(2, 2, "test");
+        let var1 = app.addinput(2, 3);
+        app.addstring(2, 7, &var1);
         app.print();
     }
 }
