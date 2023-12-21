@@ -26,15 +26,16 @@ impl Screen {
         let frame = vec![vec![standartchar; width]; height];
         Screen {width, height, standartchar, frame}
     }
-    // print out the screen
+    // setting the title of the window
     pub fn set_title(&mut self, title : String) {
         if !(title.len() + 3 > self.width){
             let x: f64 = ((self.width-title.len())/2) as f64;
             let x: usize = (x.floor()) as usize;
             self.addstring(x, 0, &title);
-            self.addstring(0, 1, &"-".repeat(self.width));
+            self.addstring(0, 1, &"=".repeat(self.width));
         }
     }
+    // print out the screen
     pub fn print(&self) {
         println!("\x1B[2J\x1B[1;1H");
         for line in &self.frame {
