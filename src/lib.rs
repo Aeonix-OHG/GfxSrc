@@ -6,7 +6,7 @@
  * 
  * Author: Jan Simon Schmitt
  * Created: 11 12 2023
- * Modified: 20 12 2023
+ * Modified: 21 12 2023
  * Modified By: Jan Simon Schmitt
  */
 use std::io::{self, Write};
@@ -27,7 +27,16 @@ impl Screen {
         Screen {width, height, standartchar, frame}
     }
     // print out the screen
+    pub fn set_title(&mut self, title : String) {
+        if !(title.len() + 3 > self.width){
+            let x: f64 = ((self.width-title.len())/2) as f64;
+            let x: usize = (x.floor()) as usize;
+            self.addstring(x, 0, &title);
+            self.addstring(0, 1, &"-".repeat(self.width));
+        }
+    }
     pub fn print(&self) {
+        println!("\x1B[2J\x1B[1;1H");
         for line in &self.frame {
             for character in line {
                 print!("{}", character);
@@ -79,8 +88,9 @@ mod tests {
     #[test]
     fn it_works() {
         let mut app = Screen::new(30, 30, ' ');
-        app.addstring(2, 2, "123456");
-        let var1 = app.addinput(2, 3, "==> ".to_owned());
+        app.set_title("Testapp".to_owned());
+        app.addstring(2, 4, "123456");
+        let var1 = app.addinput(2, 6, "==> ".to_owned());
         app.addstring(2, 7, &var1);
         app.print();
     }
