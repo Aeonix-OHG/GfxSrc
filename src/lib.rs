@@ -6,7 +6,7 @@
  * 
  * Author: Jan Simon Schmitt
  * Created: 11 12 2023
- * Modified: 21 12 2023
+ * Modified: 22 12 2023
  * Modified By: Jan Simon Schmitt
  */
 use std::io::{self, Write};
@@ -56,9 +56,9 @@ impl Screen {
         io::stdin()
             .read_line(&mut inputofusr)
             .expect("Error by reading input");
-        self.addstring(x + xp, y, &inputofusr.trim().to_string());
+        self.addstring(x + xp, y, &inputofusr.trim());
         self.print();
-        inputofusr.trim().to_string()
+        inputofusr
     }
     // clears the screen
     pub fn cls(&mut self) {
