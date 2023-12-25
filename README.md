@@ -1,7 +1,5 @@
 <h1 align="center" id="title">GfxSrc</h1>
 
-<p align="center"><img src="" alt="project-image"></p>
-
 <p id="description">A simple Library for displaying window like things in a terminal</p>
 
   
