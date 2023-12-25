@@ -5,50 +5,57 @@
  * File: lib.rs
  * 
  * Author: Jan Simon Schmitt
- * Created: 11 12 2023
- * Modified: 22 12 2023
+ * Created: 21 12 2023
+ * Modified: 25 12 2023
  * Modified By: Jan Simon Schmitt
  */
+mod color;
 use std::io::{self, Write};
+
+   
 
 // Implementing the Screen Structure
 pub struct Screen {
     width: usize,
     height: usize,
-    standartchar: char,
-    frame: Vec<Vec<char>>,
-}
-
-// Implementing the screen
+    standartchar: String,
+    frame: Vec<Vec<String>>,
+   }
+   
 impl Screen {
     // Creating a new Screen
-    pub fn new(width: usize, height: usize, standartchar: char) -> Screen {
-        let frame = vec![vec![standartchar; width]; height];
+    pub fn new(width: usize, height: usize, standartchar: String) -> Screen {
+        let frame = vec![vec![standartchar.clone(); width]; height];
         Screen {width, height, standartchar, frame}
     }
     // setting the title of the window
     pub fn set_title(&mut self, title : String) {
         if !(title.len() + 3 > self.width){
-            let x: f64 = ((self.width-title.len())/2) as f64;
-            let x: usize = (x.floor()) as usize;
-            self.addstring(x, 0, &title);
-            self.addstring(0, 1, &"=".repeat(self.width));
+           let x: f64 = ((self.width-title.len())/2) as f64;
+           let x: usize = (x.floor()) as usize;
+           self.addstring(x, 0, &title, "#ffffff");
+           self.addstring(0, 1, &"=".repeat(self.width), "#ffffff");
         }
-    }
-    // print out the screen
+       }
+   
+  
+   // print out the screen
     pub fn print(&self) {
         println!("\x1B[2J\x1B[1;1H");
         for line in &self.frame {
             for character in line {
                 print!("{}", character);
             }
-            println!()
+            println!();
         }
+        std::io::stdout().flush().unwrap();
     }
-    // adds an input filed to the screen
-    pub fn addinput(&mut self, x: usize, y: usize, promt : String) -> String {
+ 
+
+   // adds an input field to the screen
+    pub fn addinput(&mut self, x: usize, y: usize, promt : String, color: &str) -> String {
         let xp = promt.len();
-        self.addstring(x, y, &promt);
+        self.addstring(x, y, &promt, color);
         self.print();
         print!("{}", promt);
         io::stdout().flush().unwrap();
@@ -56,43 +63,57 @@ impl Screen {
         io::stdin()
             .read_line(&mut inputofusr)
             .expect("Error by reading input");
-        self.addstring(x + xp, y, &inputofusr.trim());
+        self.addstring(x + xp, y, &inputofusr.trim(), color);
         self.print();
+        std::io::stdout().flush().unwrap();
         inputofusr
     }
-    // clears the screen
+ 
+
+   // clears the screen
     pub fn cls(&mut self) {
-        self.frame = vec![vec![self.standartchar; self.width]; self.height];
-        
+        self.frame = vec![vec![self.standartchar.clone(); self.width]; self.height];
     }
-    // adds a sting to the screen
-    pub fn addstring(&mut self, x: usize, y: usize, text: &str) {
-        if !(x + text.len() > self.width) && y <= self.height{
-            let textlist = text.chars();
-            if let Some(row) = self.frame.get_mut(y) {
-                for (i, c) in textlist.enumerate() {
-                    if let Some(cell) = row.get_mut(x + i) {
-                        *cell = c;
-                    }
+   
+
+   // adds a string to the screen
+   pub fn addstring(&mut self, x: usize, y: usize, text: &str, color: &str) {
+    match color::color::get_color(color) {
+        Ok(ansi_color) => {
+            if x + text.len() + ansi_color.len() <= self.width && y < self.height {
+                let textlist = text.chars();
+                if let Some(row) = self.frame.get_mut(y) {
+                   for (i, c) in textlist.enumerate() {
+                       if let Some(cell) = row.get_mut(x + i) {
+                           *cell = format!("{}{}", ansi_color, c);
+                       }
+                   }
                 }
             }
+        },
+        Err(err) => {
+            println!("Failed to parse color: {}", err);
         }
     }
+ }
+ 
+ 
+   
 }
 
-// Tests all funktions
-
+// Tests all functions
 #[cfg(test)]
 mod tests {
-    use crate::Screen;
+   use crate::Screen;
 
-    #[test]
-    fn it_works() {
-        let mut app = Screen::new(30, 30, ' ');
-        app.set_title("Testapp".to_owned());
-        app.addstring(2, 4, "123456");
-        let var1 = app.addinput(2, 6, "==> ".to_owned());
-        app.addstring(2, 7, &var1);
-        app.print();
-    }
+   #[test]
+   fn it_works() {
+       let mut app = Screen::new(30, 30, ' '.to_string());
+       app.set_title("Testapp".to_owned());
+       app.addstring(2, 4, "123456", "test1");
+       let var1 = app.addinput(2, 6, "==> ".to_owned(), "#ff003c");
+       app.addstring(2, 7, &var1, "#32a852");
+       app.addstring(2, 7, &var1, "#f6ff00");
+       app.print();
+   }
 }
