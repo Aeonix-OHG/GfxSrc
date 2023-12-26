@@ -41,14 +41,15 @@ impl Screen {
   
    // print out the screen
     pub fn print(&self) {
-        println!("\x1B[2J\x1B[1;1H");
+        let mut framestr = String::new();
         for line in &self.frame {
             for character in line {
-                print!("{}", character);
+                framestr = framestr + character
             }
-            println!();
+            framestr = framestr + "\n"
         }
         std::io::stdout().flush().unwrap();
+        println!("\x1B[2J\x1B[1;1H\n{}", framestr);
     }
  
 
