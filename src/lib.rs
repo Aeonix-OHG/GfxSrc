@@ -6,7 +6,7 @@
  * 
  * Author: Jan Simon Schmitt
  * Created: 21 12 2023
- * Modified: 25 12 2023
+ * Modified: 26 12 2023
  * Modified By: Jan Simon Schmitt
  */
 mod color;
@@ -80,7 +80,7 @@ impl Screen {
    pub fn addstring(&mut self, x: usize, y: usize, text: &str, color: &str) {
     match color::color::get_color(color) {
         Ok(ansi_color) => {
-            if x + text.len() + ansi_color.len() <= self.width && y < self.height {
+            if x + text.len() <= self.width && y < self.height {
                 let textlist = text.chars();
                 if let Some(row) = self.frame.get_mut(y) {
                    for (i, c) in textlist.enumerate() {
