@@ -36,6 +36,7 @@ impl Screen {
         self.standartchar = standartchar;
     }
 
+    // adds a simple popup
     pub fn showpopup(&mut self, popuptitle: String, popuptext: String){
         let minline = self.height / 3;
         let maxline = (self.height / 3) *2;
@@ -49,18 +50,18 @@ impl Screen {
                 self.addstring(0, i, "|", "#FFFFFF");
                 self.addstring(self.width-1, i, "|", "#FFFFFF");
             }
-            self.addstring(1, minline+1, &popuptitle, "#FFFFFF");
-            self.addstring(1, minline+3, &popuptext, "#FFFFFF");
+            self.addstring((((self.width-2)-popuptitle.len())/2)+1, minline+1, &popuptitle, "#FFFFFF");
+            self.addstring((((self.width-2)-popuptext.len())/2)+1, minline+3, &popuptext, "#FFFFFF");
 
         }
     }
 
     // setting the title of the window
-    pub fn set_title(&mut self, title : String) {
+    pub fn set_title(&mut self, title : String, titlecolor : String) {
         if !(title.len() + 3 > self.width){
            let x: f64 = ((self.width-title.len())/2) as f64;
            let x: usize = (x.floor()) as usize;
-           self.addstring(x, 0, &title, "#ffffff");
+           self.addstring(x, 0, &title, &titlecolor);
            self.addstring(0, 1, &"=".repeat(self.width), "#ffffff");
         }
        }
@@ -148,17 +149,17 @@ mod tests {
    #[test]
    fn it_works() {
        let mut app = Screen::new(30, 30, ' '.to_string());
-       app.set_title("Testapp".to_owned());
+       app.set_title("Testapp".to_owned(), "#FFFFFF".to_owned());
        app.addstring(2, 4, "123456", "#FFFFFF");
        app.addoutline();
        let var1 = app.addinput(2, 6, "==> ".to_owned(), "#ff003c");
        app.addstring(2, 7, &var1, "#32a852");
        app.addstring(2, 7, &var1, "#f6ff00");
        app.print();
-       app.updatewindow(30, 30, ' '.to_string());
+       app.updatewindow(50, 30, ' '.to_string());
        app.cls();
-       app.set_title("123test".to_owned());
-       app.showpopup("test".to_string(), "test".to_string());
+       app.set_title("123test".to_owned(), "#FFFFFF".to_owned());
+       app.showpopup("test".to_string(), "testpopup".to_string());
        app.print();
    }
 }
