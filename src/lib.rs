@@ -37,34 +37,34 @@ impl Screen {
     }
 
     // adds a simple popup
-    pub fn showpopup(&mut self, popuptitle: String, popuptext: String){
+    pub fn showpopup(&mut self, popuptitle: String, popuptext: String, color : String){
         let minline = self.height / 3;
         let maxline = (self.height / 3) *2;
         if !(maxline-minline<5) {
             for i in 1..self.width-1 {
-                self.addstring(i, minline, "-", "#FFFFFF");
-                self.addstring(i, minline+2, "-", "#FFFFFF");
-                self.addstring(i, maxline, "-", "#FFFFFF");
+                self.addstring(i, minline, "-", &color);
+                self.addstring(i, minline+2, "-", &color);
+                self.addstring(i, maxline, "-", &color);
             }
             for i in minline+1..maxline {
-                self.addstring(0, i, "|", "#FFFFFF");
-                self.addstring(self.width-1, i, "|", "#FFFFFF");
+                self.addstring(0, i, "|", &color);
+                self.addstring(self.width-1, i, "|", &color);
             }
-            self.addstring((((self.width-2)-popuptitle.len())/2)+1, minline+1, &popuptitle, "#FFFFFF");
+            self.addstring((((self.width-2)-popuptitle.len())/2)+1, minline+1, &popuptitle, &color);
             if !(popuptext.len()>=self.width-2) {
-                self.addstring((((self.width-2)-popuptext.len())/2)+1, minline+3, &popuptext, "#FFFFFF");
+                self.addstring((((self.width-2)-popuptext.len())/2)+1, minline+3, &popuptext, &color);
             } else {
                 let poptextvec: Vec<&str> = popuptext.split_whitespace().collect();
-                let numlines = (maxline - minline - 4);
+                let numlines = maxline - minline - 4;
                 let numperline: usize = poptextvec.len()/numlines;
                 let mut counter: usize = 0;
-                for i in 0..numlines {
+                for i in 0..numlines+1 {
                     let mut outstr = "".to_string();
                     for _s in 0..numperline {
                         counter = counter + 1;
                         outstr = outstr + " " + poptextvec[counter]; 
                     }
-                    self.addstring((((self.width-2)-outstr.len())/2)+1, minline + 3 + i, &outstr, "#FFFFFF");
+                    self.addstring((((self.width-2)-outstr.len())/2)+1, minline + 3 + i, &outstr, &color);
                 }
             }
         }
@@ -76,7 +76,7 @@ impl Screen {
            let x: f64 = ((self.width-title.len())/2) as f64;
            let x: usize = (x.floor()) as usize;
            self.addstring(x, 0, &title, &titlecolor);
-           self.addstring(0, 1, &"=".repeat(self.width), "#ffffff");
+           self.addstring(0, 1, &"=".repeat(self.width), &titlecolor);
         }
        }
    
@@ -95,14 +95,14 @@ impl Screen {
     }
     
     // adds an outline for the window
-    pub fn addoutline(&mut self) {
+    pub fn addoutline(&mut self, color: String) {
         for i in 0..(self.height -1) {
-            self.addstring(0, i +1, "|", "#FFFFFF");
-            self.addstring(self.width-1, i +1, "|", "#FFFFFF");
+            self.addstring(0, i +1, "|", &color);
+            self.addstring(self.width-1, i +1, "|", &color);
         }
         for i in 0..(self.width -2) {
-            self.addstring(i+1, 1, "-", "#FFFFFF");
-            self.addstring(i+1, self.height-1, "-", "#FFFFFF");
+            self.addstring(i+1, 1, "-", &color);
+            self.addstring(i+1, self.height-1, "-", &color);
         }
     }
 
@@ -165,7 +165,7 @@ mod tests {
        let mut app = Screen::new(30, 30, ' '.to_string());
        app.set_title("Testapp".to_owned(), "#FFFFFF".to_owned());
        app.addstring(2, 4, "123456", "#FFFFFF");
-       app.addoutline();
+       app.addoutline("#FFFFFF".to_string());
        let var1 = app.addinput(2, 6, "==> ".to_owned(), "#ff003c");
        app.addstring(2, 7, &var1, "#32a852");
        app.addstring(2, 7, &var1, "#f6ff00");
@@ -173,7 +173,7 @@ mod tests {
        app.updatewindow(50, 30, ' '.to_string());
        app.cls();
        app.set_title("123test".to_owned(), "#FFFFFF".to_owned());
-       app.showpopup("test".to_string(), "testpopup twet jsd sdfsfwsd dfgf sfsf wdfwd sjhsjdhjdjs jsjagddj shajgsda ajsdjs fhksjhf ahshdfjas jkasfgsa jafjsaf".to_string());
+       app.showpopup("test".to_string(), "Lorem test test test test test test test test ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt est ".to_string(), "#FFFFFF".to_string());
        app.print();
    }
 }
