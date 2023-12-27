@@ -6,7 +6,7 @@
  * 
  * Author: Jan Simon Schmitt
  * Created: 21 12 2023
- * Modified: 26 12 2023
+ * Modified: 27 12 2023
  * Modified By: Jan Simon Schmitt
  */
 mod color;
@@ -28,6 +28,13 @@ impl Screen {
         let frame = vec![vec![standartchar.clone(); width]; height];
         Screen {width, height, standartchar, frame}
     }
+
+    pub fn updatewindow(&mut self, width: usize, height:usize, standartchar: String) {
+        self.width = width;
+        self.height = height;
+        self.standartchar = standartchar;
+    }
+
     // setting the title of the window
     pub fn set_title(&mut self, title : String) {
         if !(title.len() + 3 > self.width){
@@ -115,6 +122,10 @@ mod tests {
        let var1 = app.addinput(2, 6, "==> ".to_owned(), "#ff003c");
        app.addstring(2, 7, &var1, "#32a852");
        app.addstring(2, 7, &var1, "#f6ff00");
+       app.print();
+       app.updatewindow(30, 30, '#'.to_string());
+       app.cls();
+       app.set_title("123test".to_owned());
        app.print();
    }
 }
