@@ -29,6 +29,7 @@ impl Screen {
         Screen {width, height, standartchar, frame}
     }
 
+    // Updating the variables of the app
     pub fn updatewindow(&mut self, width: usize, height:usize, standartchar: String) {
         self.width = width;
         self.height = height;
