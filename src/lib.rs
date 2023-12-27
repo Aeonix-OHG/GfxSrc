@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (c) 2023 Aeonix https://github.com/Aeonix-OHG
  * All Rights Reserved
  * Project: src
@@ -36,6 +36,25 @@ impl Screen {
         self.standartchar = standartchar;
     }
 
+    pub fn showpopup(&mut self, popuptitle: String, popuptext: String){
+        let minline = self.height / 3;
+        let maxline = (self.height / 3) *2;
+        if !(maxline-minline<5) {
+            for i in 1..self.width-1 {
+                self.addstring(i, minline, "-", "#FFFFFF");
+                self.addstring(i, minline+2, "-", "#FFFFFF");
+                self.addstring(i, maxline, "-", "#FFFFFF");
+            }
+            for i in minline+1..maxline {
+                self.addstring(0, i, "|", "#FFFFFF");
+                self.addstring(self.width-1, i, "|", "#FFFFFF");
+            }
+            self.addstring(1, minline+1, &popuptitle, "#FFFFFF");
+            self.addstring(1, minline+3, &popuptext, "#FFFFFF");
+
+        }
+    }
+
     // setting the title of the window
     pub fn set_title(&mut self, title : String) {
         if !(title.len() + 3 > self.width){
@@ -62,7 +81,7 @@ impl Screen {
     
     // adds an outline for the window
     pub fn addoutline(&mut self) {
-        for i in 0..(self.height -2) {
+        for i in 0..(self.height -1) {
             self.addstring(0, i +1, "|", "#FFFFFF");
             self.addstring(self.width-1, i +1, "|", "#FFFFFF");
         }
@@ -136,9 +155,10 @@ mod tests {
        app.addstring(2, 7, &var1, "#32a852");
        app.addstring(2, 7, &var1, "#f6ff00");
        app.print();
-       app.updatewindow(30, 30, '#'.to_string());
+       app.updatewindow(30, 30, ' '.to_string());
        app.cls();
        app.set_title("123test".to_owned());
+       app.showpopup("test".to_string(), "test".to_string());
        app.print();
    }
 }
