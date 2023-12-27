@@ -32,7 +32,7 @@ This project is not licensed at the moment
 
 <h2>🎯 Future Plans</h2>
 
-* Adding support ofr the NPF
+* Adding support of the NPF
 * Multithreading
 * Getting keyboard input direct via the keyboard registers
 * Not using the std 
