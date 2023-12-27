@@ -51,8 +51,22 @@ impl Screen {
                 self.addstring(self.width-1, i, "|", "#FFFFFF");
             }
             self.addstring((((self.width-2)-popuptitle.len())/2)+1, minline+1, &popuptitle, "#FFFFFF");
-            self.addstring((((self.width-2)-popuptext.len())/2)+1, minline+3, &popuptext, "#FFFFFF");
-
+            if !(popuptext.len()>=self.width-2) {
+                self.addstring((((self.width-2)-popuptext.len())/2)+1, minline+3, &popuptext, "#FFFFFF");
+            } else {
+                let poptextvec: Vec<&str> = popuptext.split_whitespace().collect();
+                let numlines = (maxline - minline - 4);
+                let numperline: usize = poptextvec.len()/numlines;
+                let mut counter: usize = 0;
+                for i in 0..numlines {
+                    let mut outstr = "".to_string();
+                    for _s in 0..numperline {
+                        counter = counter + 1;
+                        outstr = outstr + " " + poptextvec[counter]; 
+                    }
+                    self.addstring((((self.width-2)-outstr.len())/2)+1, minline + 3 + i, &outstr, "#FFFFFF");
+                }
+            }
         }
     }
 
@@ -159,7 +173,7 @@ mod tests {
        app.updatewindow(50, 30, ' '.to_string());
        app.cls();
        app.set_title("123test".to_owned(), "#FFFFFF".to_owned());
-       app.showpopup("test".to_string(), "testpopup".to_string());
+       app.showpopup("test".to_string(), "testpopup twet jsd sdfsfwsd dfgf sfsf wdfwd sjhsjdhjdjs jsjagddj shajgsda ajsdjs fhksjhf ahshdfjas jkasfgsa jafjsaf".to_string());
        app.print();
    }
 }
