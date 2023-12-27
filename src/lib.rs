@@ -59,7 +59,18 @@ impl Screen {
         std::io::stdout().flush().unwrap();
         println!("\x1B[2J\x1B[1;1H\n{}", framestr);
     }
- 
+    
+    // adds an outline for the window
+    pub fn addoutline(&mut self) {
+        for i in 0..(self.height -2) {
+            self.addstring(0, i +1, "|", "#FFFFFF");
+            self.addstring(self.width-1, i +1, "|", "#FFFFFF");
+        }
+        for i in 0..(self.width -2) {
+            self.addstring(i+1, 1, "-", "#FFFFFF");
+            self.addstring(i+1, self.height-1, "-", "#FFFFFF");
+        }
+    }
 
    // adds an input field to the screen
     pub fn addinput(&mut self, x: usize, y: usize, promt : String, color: &str) -> String {
@@ -119,7 +130,8 @@ mod tests {
    fn it_works() {
        let mut app = Screen::new(30, 30, ' '.to_string());
        app.set_title("Testapp".to_owned());
-       app.addstring(2, 4, "123456", "test1");
+       app.addstring(2, 4, "123456", "#FFFFFF");
+       app.addoutline();
        let var1 = app.addinput(2, 6, "==> ".to_owned(), "#ff003c");
        app.addstring(2, 7, &var1, "#32a852");
        app.addstring(2, 7, &var1, "#f6ff00");
