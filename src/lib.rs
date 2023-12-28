@@ -156,7 +156,7 @@ impl Screen {
             for (x, pixel) in line.iter().enumerate() {
                 let color = "#".to_string() + pixel;
                 if color.len() >= 7 {
-                    self.addstring(x+ xw, y+yh, "#", &color);
+                    self.addstring(x+ xw, y+yh, "█", &color);
                 }
             }
         }
@@ -192,8 +192,8 @@ mod tests {
 
    #[test]
    fn it_works() {
-        let mut screen = Screen::new(80, 30, ' '.to_string());
-        screen.addpic(3, 3, "testpic.npf").unwrap();
+        let mut screen = Screen::new(80, 20, ' '.to_string());
+        screen.addpic(0, 0, "testpic.npf").unwrap();
         screen.print();
        //let mut app = Screen::new(30, 30, ' '.to_string());
        //app.set_title("Testapp", "#FFFFFF");
