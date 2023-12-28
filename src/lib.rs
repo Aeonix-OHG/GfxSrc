@@ -6,7 +6,7 @@
  * 
  * Author: Jan Simon Schmitt
  * Created: 21 12 2023
- * Modified: 27 12 2023
+ * Modified: 28 12 2023
  * Modified By: Jan Simon Schmitt
  */
 mod color;
