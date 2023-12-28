@@ -37,7 +37,7 @@ impl Screen {
     }
 
     // adds a simple popup
-    pub fn showpopup(&mut self, popuptitle: String, popuptext: String, color : String){
+    pub fn showpopup(&mut self, popuptitle: &str, popuptext: &str, color : &str){
         let minline = self.height / 3;
         let maxline = (self.height / 3) *2;
         if !(maxline-minline<5) {
@@ -71,7 +71,7 @@ impl Screen {
     }
 
     // setting the title of the window
-    pub fn set_title(&mut self, title : String, titlecolor : String) {
+    pub fn set_title(&mut self, title : &str, titlecolor : &str) {
         if !(title.len() + 3 > self.width){
            let x: f64 = ((self.width-title.len())/2) as f64;
            let x: usize = (x.floor()) as usize;
@@ -95,7 +95,7 @@ impl Screen {
     }
     
     // adds an outline for the window
-    pub fn addoutline(&mut self, color: String) {
+    pub fn addoutline(&mut self, color: &str) {
         for i in 0..(self.height -1) {
             self.addstring(0, i +1, "|", &color);
             self.addstring(self.width-1, i +1, "|", &color);
@@ -107,7 +107,7 @@ impl Screen {
     }
 
    // adds an input field to the screen
-    pub fn addinput(&mut self, x: usize, y: usize, promt : String, color: &str) -> String {
+    pub fn addinput(&mut self, x: usize, y: usize, promt : &str, color: &str) -> String {
         let xp = promt.len();
         self.addstring(x, y, &promt, color);
         self.print();
@@ -163,17 +163,17 @@ mod tests {
    #[test]
    fn it_works() {
        let mut app = Screen::new(30, 30, ' '.to_string());
-       app.set_title("Testapp".to_owned(), "#FFFFFF".to_owned());
+       app.set_title("Testapp", "#FFFFFF");
        app.addstring(2, 4, "123456", "#FFFFFF");
-       app.addoutline("#FFFFFF".to_string());
-       let var1 = app.addinput(2, 6, "==> ".to_owned(), "#ff003c");
+       app.addoutline("#FFFFFF");
+       let var1 = app.addinput(2, 6, "==> ", "#ff003c");
        app.addstring(2, 7, &var1, "#32a852");
        app.addstring(2, 7, &var1, "#f6ff00");
        app.print();
        app.updatewindow(50, 30, ' '.to_string());
        app.cls();
-       app.set_title("123test".to_owned(), "#FFFFFF".to_owned());
-       app.showpopup("test".to_string(), "Lorem test test test test test test test test ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt est ".to_string(), "#FFFFFF".to_string());
+       app.set_title("123test", "#FFFFFF");
+       app.showpopup("test", "Lorem test test test test test test test test ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt est ", "#FFFFFF");
        app.print();
    }
 }
