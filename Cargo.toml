@@ -1,7 +1,7 @@
 [package]
 name = "gfxsrc"
 version = "0.1.2"
-edition = "2021"
+edition = "2018"
 
 [lib]
 name = "gfxsrc"
